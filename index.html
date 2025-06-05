@@ -1,0 +1,503 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CheckEngine - Магазин автозапчастей</title>
+    <style>
+        /* Основные стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Шапка сайта */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #e74c3c;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #e74c3c;
+        }
+
+        /* Секция поиска */
+        .search-section {
+            background-color: #ecf0f1;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-input, .filter-select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #c0392b;
+        }
+
+        /* Категории */
+        .categories {
+            padding: 30px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-size: 28px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-image {
+            height: 180px;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .category-info {
+            padding: 15px;
+        }
+
+        .category-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .category-count {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        /* Популярные товары */
+        .products {padding: 30px 0;
+        background-color: white;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .product-card {
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-image {
+        height: 200px;
+        background-color: #f9f9f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .product-info {
+        padding: 15px;
+    }
+
+    .product-name {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #2c3e50;
+    }
+
+    .product-code {
+        color: #7f8c8d;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .product-compatibility {
+        color: #333;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .product-price {
+        font-size: 20px;
+        font-weight: bold;
+        color: #e74c3c;
+        margin-bottom: 15px;
+    }
+
+    .product-actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .add-to-cart {
+        padding: 8px 15px;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .add-to-cart:hover {
+        background-color: #c0392b;
+    }
+
+    .add-to-favorites {
+        padding: 8px 15px;
+        background-color: white;
+        color: #333;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .add-to-favorites:hover {
+        background-color: #f9f9f9;
+    }
+
+        /* Подвал */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #e74c3c;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: #e74c3c;
+        }
+
+        .contact-info {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            color: #e74c3c;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">Check<span>Engine</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#">Каталог</a></li>
+                    <li><a href="#">Доставка</a></li>
+                    <li><a href="#">О компании</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Секция поиска -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Введите название детали или артикулу...">
+                <select class="filter-select">
+                    <option value="">Выберите марку</option>
+                    <option value="toyota">Toyota</option>
+                    <option value="honda">Honda</option>
+                    <option value="nissan">Nissan</option>
+                    <option value="volkswagen">Volkswagen</option>
+                    <option value="bmw">BMW</option>
+                    <option value="mercedes">Mercedes-Benz</option>
+                </select>
+                <select class="filter-select">
+                    <option value="">Выберите модель</option>
+                    <option value="camry">Camry</option>
+                    <option value="corolla">Corolla</option>
+                    <option value="accord">Accord</option>
+                    <option value="civic">Civic</option>
+                    <option value="golf">Golf</option>
+                    <option value="passat">Passat</option>
+                </select>
+                <select class="filter-select">
+                    <option value="">Выберите год</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                    <option value="2018">2018</option>
+                </select>
+                <button class="search-button">Найти</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Популярные товары -->
+    <section class="products">
+        <div class="container">
+            <h2 class="section-title">Популярные товары</h2>
+            <div class="products-grid">
+                <!-- Карточки товаров -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2014/11/22/05/29/oil-filter-540141_960_720.jpg" alt="Фильтр масляный">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Фильтр масляный</h3>
+                        <p class="product-code">Код: FL-001</p>
+                        <p class="product-compatibility">Совместим с: Toyota Camry</p>
+                        <p class="product-price">520 ₽</p>
+                        <div class="product-actions">
+                            <button class="add-to-cart">В корзину</button>
+                            <button class="add-to-favorites">В избранное</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2014/11/22/05/29/spark-plug-540140_960_720.jpg" alt="Свеча зажигания">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Свеча зажигания</h3>
+                        <p class="product-code">Код: SP-002</p>
+                        <p class="product-compatibility">Совместим с: Nissan Almera</p>
+                        <p class="product-price">300 ₽</p>
+                        <div class="product-actions">
+                            <button class="add-to-cart">В корзину</button>
+                            <button class="add-to-favorites">В избранное</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2016/11/22/17/24/spring-1853246_960_720.jpg" alt="Амортизатор">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Амортизатор</h3>
+                        <p class="product-code">Код: SH-003</p>
+                        <p class="product-compatibility">Совместим с: Volkswagen Golf</p>
+                        <p class="product-price">800 ₽</p>
+                        <div class="product-actions">
+                            <button class="add-to-cart">В корзину</button>
+                            <button class="add-to-favorites">В избранное</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2016/11/21/18/17/brake-disk-1846723_960_720.jpg" alt="Тормозной диск">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Тормозной диск</h3>
+                        <p class="product-code">Код: BD-004</p>
+                        <p class="product-compatibility">Совместим с: BMW 3 Series</p>
+                        <p class="product-price">1500 ₽</p>
+                        <div class="product-actions">
+                            <button class="add-to-cart">В корзину</button>
+                            <button class="add-to-favorites">В избранное</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2015/11/11/21/27/automobile-1034936_960_720.jpg" alt="Фара передняя">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Фара передняя</h3>
+                        <p class="product-code">Код: LH-005</p>
+                        <p class="product-compatibility">Совместим с: Mercedes-Benz C-Class</p>
+                        <p class="product-price">3500 ₽</p>
+                        <div class="product-actions">
+                            <button class="add-to-cart">В корзину</button>
+                            <button class="add-to-favorites">В избранное</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <!-- Контент футера -->
+            </div>
+            <div class="copyright">
+                &copy; 2025 АСУбз-24-1. Кондратьев А.В. Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Пример работы с фильтрами поиска (будет можно расширять)
+        const searchButton = document.querySelector('.search-button');
+        const searchInput = document.querySelector('.search-input');
+
+        searchButton.addEventListener('click', () => {
+            alert('Поиск по запросу: ' + searchInput.value);
+        });
+    </script>
+</body>
+</html>
